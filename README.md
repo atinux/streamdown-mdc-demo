@@ -1,73 +1,79 @@
-# React + TypeScript + Vite
+# Streamdown + MDC Demo
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A demo showcasing streaming MDC (Markdown Components) content, combining [Vercel's Streamdown](https://github.com/vercel/streamdown) with [remark-mdc](https://github.com/nuxtlabs/remark-mdc) for rendering custom components in real-time.
 
-Currently, two official plugins are available:
+**Live Demo:** https://streamdown-mdc-demo.vercel.app
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## React Compiler
+- **Streaming Simulation** - Watch MDC content stream character by character, similar to AI chat interfaces
+- **Synchronized Panels** - Both source and preview panels stream simultaneously
+- **Custom MDC Components** - Alert, Card, Callout, and Badge components
+- **Playback Controls** - Start, pause, resume, complete, and reset streaming
+- **Adjustable Speed** - Slow, normal, and fast streaming speeds
+- **Live Indicators** - Visual feedback showing active streaming state
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## MDC Components
 
-## Expanding the ESLint configuration
+The demo includes these custom components:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+```markdown
+::alert{type="info"}
+This is an info alert.
+::
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+::alert{type="warning"}
+This is a warning alert.
+::
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+::callout{icon="💡" title="Pro Tip"}
+Callout with icon and title.
+::
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+::card{title="Feature Card"}
+Card content with **markdown** support.
+::
+
+Inline components: :badge[New]{color="green"} :badge[Beta]{color="yellow"}
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Tech Stack
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- [Vite](https://vite.dev/) - Build tool
+- [React](https://react.dev/) + TypeScript
+- [Streamdown](https://github.com/vercel/streamdown) - Streaming markdown renderer
+- [remark-mdc](https://github.com/nuxtlabs/remark-mdc) - MDC syntax parser
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+## Getting Started
+
+```bash
+# Install dependencies
+pnpm install
+
+# Start development server
+pnpm dev
+
+# Build for production
+pnpm build
+
+# Preview production build
+pnpm preview
 ```
+
+## Project Structure
+
+```
+src/
+├── components/
+│   ├── MDCComponents.tsx    # Custom MDC components (Alert, Card, etc.)
+│   └── MDCRenderer.tsx      # Renders MDC AST to React elements
+├── lib/
+│   └── mdc-parser.ts        # remark-mdc parser using unified
+├── App.tsx                  # Main app with streaming controls
+└── index.css                # Tailwind CSS setup
+```
+
+## License
+
+MIT
