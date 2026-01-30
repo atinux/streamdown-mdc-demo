@@ -309,27 +309,11 @@ function App() {
 
         {/* Content */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Editor */}
-          <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800">
-            <h3 className="text-sm font-medium text-zinc-400 mb-3">
-              {activeTab === 'mdc' ? 'MDC Source' : 'Markdown Source'}
-            </h3>
-            <textarea
-              value={mdcContent}
-              onChange={(e) => {
-                setMdcContent(e.target.value)
-                reset()
-              }}
-              className="w-full h-[500px] bg-zinc-950 text-zinc-300 font-mono text-sm p-4 rounded-lg border border-zinc-800 resize-none focus:outline-none focus:border-zinc-600"
-              placeholder="Enter MDC content here..."
-            />
-          </div>
-
-          {/* Preview */}
+          {/* Source Panel */}
           <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-medium text-zinc-400">
-                Streaming Preview
+                {activeTab === 'mdc' ? 'MDC Source' : 'Markdown Source'}
                 {isStreaming && (
                   <span className="ml-2 inline-flex items-center gap-1 text-green-400">
                     <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
@@ -338,22 +322,62 @@ function App() {
                 )}
               </h3>
             </div>
+            {isStreaming || isPaused || streamedText ? (
+              <div className="w-full h-[500px] bg-zinc-950 text-zinc-300 font-mono text-sm p-4 rounded-lg border border-zinc-800 overflow-y-auto whitespace-pre-wrap break-words">
+                {streamedText}
+                {isStreaming && (
+                  <span className="inline-block w-2 h-5 bg-green-400 animate-pulse ml-0.5 align-middle" />
+                )}
+              </div>
+            ) : (
+              <textarea
+                value={mdcContent}
+                onChange={(e) => {
+                  setMdcContent(e.target.value)
+                  reset()
+                }}
+                className="w-full h-[500px] bg-zinc-950 text-zinc-300 font-mono text-sm p-4 rounded-lg border border-zinc-800 resize-none focus:outline-none focus:border-zinc-600"
+                placeholder="Enter MDC content here..."
+              />
+            )}
+          </div>
+
+          {/* Preview Panel */}
+          <div className="bg-zinc-900 rounded-xl p-4 border border-zinc-800">
+            <div className="flex items-center justify-between mb-3">
+              <h3 className="text-sm font-medium text-zinc-400">
+                Rendered Preview
+                {isStreaming && (
+                  <span className="ml-2 inline-flex items-center gap-1 text-blue-400">
+                    <span className="w-2 h-2 bg-blue-400 rounded-full animate-pulse" />
+                    Live
+                  </span>
+                )}
+              </h3>
+            </div>
             <div className="h-[500px] overflow-y-auto pr-2">
               {activeTab === 'mdc' ? (
                 streamedText ? (
-                  <MDCRenderer content={streamedText} />
+                  <>
+                    <MDCRenderer content={streamedText} />
+                    {isStreaming && (
+                      <span className="inline-block w-2 h-5 bg-blue-400 animate-pulse ml-0.5" />
+                    )}
+                  </>
                 ) : (
                   <div className="text-zinc-500 text-center py-12">
                     Click "Start Streaming" to see MDC components render in real-time
                   </div>
                 )
               ) : (
-                <Streamdown plugins={{ code }} isAnimating={isStreaming}>
-                  {streamedText || ''}
-                </Streamdown>
-              )}
-              {isStreaming && (
-                <span className="inline-block w-2 h-5 bg-blue-400 animate-pulse ml-0.5" />
+                <>
+                  <Streamdown plugins={{ code }} isAnimating={isStreaming}>
+                    {streamedText || ''}
+                  </Streamdown>
+                  {isStreaming && (
+                    <span className="inline-block w-2 h-5 bg-blue-400 animate-pulse ml-0.5" />
+                  )}
+                </>
               )}
             </div>
           </div>
